@@ -1,7 +1,7 @@
 ### function for DIC from PMwG samples
 #### Contributed by Reilly Innes
 
-pmwg.DIC=function(sampled,pD=FALSE){
+pmwg_DIC=function(sampled,pD=FALSE){
   nsubj=length(unique(sampled$data$subject))
   
   # the mean likelihood of the overall (sampled-stage) model, separately for each subject

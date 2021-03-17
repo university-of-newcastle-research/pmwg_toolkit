@@ -3,7 +3,7 @@
 
 
 library(LaplacesDemon)
-pmwg.iact = function(sampled){
+pmwg_iact = function(sampled){
   dim = sampled$n_pars
   n.params<- (dim*dim - dim)/2 
   n_subjects = sampled$n_subjects

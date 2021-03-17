@@ -3,7 +3,7 @@
 
 
 ### from the sampled object, uses the LL (sample =TRUE) to create data. Relies on LL being correct. Can have errors with lists
-generate.posterior <- function(sampled, n){
+pmwg_generatePosterior <- function(sampled, n){
   n.posterior=n # Number of parameter samples from posterior distribution.
   pp.data=list()
   S = sampled$n_subjects
