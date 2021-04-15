@@ -13,13 +13,11 @@ pmwg_parHist <- function(samples){
 }
 
 pmwg_parHistPrior<- function(samples){
-  theta <- t(sampled$samples$theta_mu)
+  theta <- t(sampled$samples$theta_mu[sampled$samples$stage=="sample"])
   theta<-as.data.frame(theta)
   theta <- pivot_longer(theta, cols = everything(), names_to = "pars", values_to = "estimate" )
   prior_mean <- sampled$prior$theta_mu_mean
   prior_var <- diag(sampled$prior$theta_mu_var)
-  names(prior_mean)<-sampled$par_names
-  names(prior_var)<-sampled$par_names
   priors <- as.data.frame(cbind(prior_mean,prior_var))
   priors$pars <- sampled$par_names
   theta <- left_join(theta, priors, by="pars")
