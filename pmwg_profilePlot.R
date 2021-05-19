@@ -6,9 +6,12 @@
 #### For the different generating values, we use small increments (which can be negative or positive)
 #### We expect to see inverse U shaped curves, where the likelihood is most likely at the generating value and falls away as we get further from the generating value
 
+##### When using the function, if you do not specify generating_values you NEED to specify start_points and/or informed priors
+
 #### NOTE: The likelihood function needs both sample = TRUE and sample = FALSE arguments to function correctly
 #### Also, avoid putting protective statements (like if(any(data$rt)<t0) etc) at the beginning of the function
 #### These statements should go in the if(sample=FALSE) part
+
 require(ggplot2)
 require(tidyr)
 require(pmwg)
