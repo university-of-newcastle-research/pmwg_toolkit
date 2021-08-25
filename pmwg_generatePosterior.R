@@ -10,20 +10,30 @@ pmwg_generatePosterior <- function(sampled, n){
   data=sampled$data
   sampled_stage = length(sampled$samples$stage[sampled$samples$stage=="sample"])
   for (s in 1:S) {
-    cat(s," ")
+    print(paste0("subject ", s))
     iterations=round(seq(from=(sampled$samples$idx-sampled_stage) , to=sampled$samples$idx, length.out=n.posterior))
     for (i in 1:length(iterations)) {
+      print(i)
       x <- sampled$samples$alpha[,s,iterations[i]]
       names(x) <- sampled$par_names
-      tmp=sampled$ll_func(x=x,data=data[as.integer(as.numeric(data$subject))==s,],sample=TRUE)
+      tmp=sampled$ll_func(x=x,
+                          data= data[data$subject == unique(data$subject)[s], ],
+                          sample=TRUE)
       if (i==1) {
-        pp.data[[s]]=cbind(i,tmp)
+        pp.data[[s]]=cbind(pp_iter = i,tmp)
       } else {
-        pp.data[[s]]=rbind(pp.data[[s]],cbind(i,tmp))
+        pp.data[[s]]=rbind(pp.data[[s]],cbind(pp_iter = i,tmp))
       }
     }
+    
   }
-  return(pp.data)
+  if (rbind.data){
+    tidy_pp_data <- do.call(rbind, pp_data)  
+    return(tidy_pp_data)
+  }
+  else {
+    return(pp_data)
+  }
 }
 #tmp<-generate.posterior(sampled,10)
 #tmp=do.call(rbind,tmp)
