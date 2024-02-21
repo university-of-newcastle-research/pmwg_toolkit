@@ -3,7 +3,12 @@
 
 
 ### from the sampled object, uses the LL (sample =TRUE) to create data. Relies on LL being correct. Can have errors with lists
-pmwg_generatePosterior <- function(sampled, n, rbind.data=TRUE){
+pmwg_generatePosterior <- function(sampled, n, rbind.data=TRUE, sample_func=NULL){
+  if (is.null(sample_func)) {
+    sample_func <- function(x, data) {
+      sampled$ll_func(x, data, sample=TRUE)
+    }
+  }
   n.posterior=n # Number of parameter samples from posterior distribution.
   pp.data=list()
   S = sampled$n_subjects
@@ -15,10 +20,7 @@ pmwg_generatePosterior <- function(sampled, n, rbind.data=TRUE){
     for (i in 1:length(iterations)) {
       print(i)
       x <- sampled$samples$alpha[,s,iterations[i]]
-      names(x) <- sampled$par_names
-      tmp=sampled$ll_func(x=x,
-                          data= data[data$subject == unique(data$subject)[s], ],
-                          sample=TRUE)
+      tmp <- sample_func(x=x, data=data[data$subject == unique(data$subject)[s], ])
       if (i==1) {
         pp.data[[s]]=cbind(pp_iter = i,tmp)
       } else {
