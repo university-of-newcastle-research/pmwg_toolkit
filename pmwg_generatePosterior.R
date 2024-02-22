@@ -14,11 +14,10 @@ pmwg_generatePosterior <- function(sampled, n, rbind.data=TRUE, sample_func=NULL
   S = sampled$n_subjects
   data=sampled$data
   sampled_stage = length(sampled$samples$stage[sampled$samples$stage=="sample"])
+  pb = txtProgressBar(min = 0, max = S, initial = 0, style = 3)
   for (s in 1:S) {
-    print(paste0("subject ", s))
     iterations=round(seq(from=(sampled$samples$idx-sampled_stage) , to=sampled$samples$idx, length.out=n.posterior))
     for (i in 1:length(iterations)) {
-      print(i)
       x <- sampled$samples$alpha[,s,iterations[i]]
       tmp <- sample_func(x=x, data=data[data$subject == unique(data$subject)[s], ])
       if (i==1) {
@@ -27,10 +26,11 @@ pmwg_generatePosterior <- function(sampled, n, rbind.data=TRUE, sample_func=NULL
         pp_data[[s]]=rbind(pp_data[[s]],cbind(pp_iter = i,tmp))
       }
     }
-    
+    setTxtProgressBar(pb,s)
   }
+  close(pb)
   if (rbind.data){
-    tidy_pp_data <- do.call(rbind, pp_data)  
+    tidy_pp_data <- do.call(rbind, pp_data)
     return(tidy_pp_data)
   }
   else {
