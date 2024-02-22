@@ -10,7 +10,7 @@ pmwg_generatePosterior <- function(sampled, n, rbind.data=TRUE, sample_func=NULL
     }
   }
   n.posterior=n # Number of parameter samples from posterior distribution.
-  pp.data=list()
+  pp_data=list()
   S = sampled$n_subjects
   data=sampled$data
   sampled_stage = length(sampled$samples$stage[sampled$samples$stage=="sample"])
@@ -22,9 +22,9 @@ pmwg_generatePosterior <- function(sampled, n, rbind.data=TRUE, sample_func=NULL
       x <- sampled$samples$alpha[,s,iterations[i]]
       tmp <- sample_func(x=x, data=data[data$subject == unique(data$subject)[s], ])
       if (i==1) {
-        pp.data[[s]]=cbind(pp_iter = i,tmp)
+        pp_data[[s]]=cbind(pp_iter = i,tmp)
       } else {
-        pp.data[[s]]=rbind(pp.data[[s]],cbind(pp_iter = i,tmp))
+        pp_data[[s]]=rbind(pp_data[[s]],cbind(pp_iter = i,tmp))
       }
     }
     
